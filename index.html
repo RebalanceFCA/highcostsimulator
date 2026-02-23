@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>鍼灸院経営シュミレーション</title>
+  <title>鍼灸院経営シミュレーション</title>
   <style>
     * {
       margin: 0;
@@ -248,13 +248,13 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>技術向上後の鍼灸院経営『未来予想図』簡単シュミレーション</h1>
+      <h1>高単価メニュー導入後の『未来予想図』簡単シミュレーション</h1>
       <p>このシミュレーターは、単なる計算機ではありません。<br>
         先生が「技術を磨くこと」が、いかにして「自由な時間」と「精神的なゆとり」<br>
         そして「揺るぎない収益」に直結するかを可視化する未来予想図です。</p>
       <br>
-      <p>「今の鍼灸院のリアルな数字」を入れて「結果を算出」ボタンを押してください。<br>
-         「鍼灸院の未来予想図」に高単価メニュー導入後のイメージの算出結果が表示されます。</p>
+      <p>「今の単価と患者数」と「高単価メニューを導入した未来」、「未来のもう一つの収入の柱」を入力して「結果を算出」ボタンを押してください。<br>
+         「リアル算出結果」に高単価メニューを導入した場合の売上／月のイメージの算出結果が表示されます。</p>
     </div>
 
     <div class="form-grid">
@@ -299,12 +299,11 @@
         <div class="subsection-title">未来のもう一つの収入の柱(物販サブスク)</div>
         
         <div class="form-group">
-          <label for="medical-cases">保有カルテ枚数(枚)</label>
+          <label for="medical-cases">カルテ枚数(枚)</label>
           <input type="number" id="medical-cases" value="500">
-          <div class="note">※想定購入率30%/単価10,000円で算出</div>
         </div>
         
-        <button class="calculate-btn" onclick="calculateResults()">結果を算出する</button>
+        <button class="calculate-btn" onclick="calculateResults()">結果を算出</button>
       </div>
 
       <div class="results-section">
@@ -312,52 +311,48 @@
         
         <div class="result-item">
           <span class="label">今の売上(月)</span>
-          <span class="value">ﾥ<span id="monthly-sales">1,056,000</span></span>
+          <span class="value">¥<span id="monthly-sales">1,056,000</span></span>
         </div>
         
         <div class="result-item">
           <span class="label">高単価メニューによる売上(月)</span>
-          <span class="value">ﾥ<span id="premium-revenue">0</span></span>
+          <span class="value">¥<span id="premium-revenue">0</span></span>
         </div>
 
         <div class="result-item">
           <span class="label">物販売上げ(サブスク)</span>
           <span class="value">¥<span id="product-revenue">1,500,000</span></span>
+           <div class="note">カルテ枚数の30%×10,000円／月（目安）</div>
         </div>
 
         <div class="result-item-highlight">
           <span class="label">高単価メニュー導入後の月間総売上予測</span>
-          <div class="value">ﾥ<span id="total-sales">2,556,000</span></div>
-          <div class="difference">+ ﾥ<span id="difference">1,500,000</span></div>
+          <div class="value">¥<span id="total-sales">2,556,000</span></div>
+           <div class="note">今の売上に</div>
+          <div class="difference">+ ¥<span id="difference">1,500,000</span></div>
         </div>
       </div>
     </div>
 
     <div class="explanation-section">
-      <h3>シュミレーション結果はいかがでしたか？</h3>
+      <h3>シミュレーション結果はいかがでしたか？</h3>
       
       <div style="max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
         <p style="font-size: 15px; line-height: 1.8; color: #333; margin-bottom: 20px;">
-          今の鍼灸院の現状を具体的に数値入力することで、まだまだ売上の伸び代、時間的余裕が生まれることにお気づきになられたのではないでしょうか?
+          今の鍼灸院の現状と高単価メニューを導入した場合の具体的な数値を入力することで、まだまだ売上の伸び代があることにお気づきになられたのではないでしょうか?
         </p>
         
         <p style="font-size: 15px; line-height: 1.8; color: #333; margin-bottom: 15px;">それは、</p>
         
         <ul style="font-size: 15px; line-height: 1.8; color: #333; margin-bottom: 20px; padding-left: 20px;">
           <li>高単価メニュー導入で増収益が実現可能になること。</li>
-          <li>高リピート率の実現で増収益になること。</li>
+          <li>単価を２倍３倍にすることで具体的なイメージができて、こんなにも増収益になること。</li>
           <li>物販の売上も増収益になること。</li>
-          <li>月商（売上）を落とさずに自由な時間を創出できること。</li>
-          <li>施術人数が半分になれば疲労度も軽減されること。</li>
         </ul>
         
         <p style="font-size: 15px; line-height: 1.8; color: #333; margin-bottom: 20px;">
           現在の施術単価の月売上は、単価が2倍、施術人数が半分になっても同じです。<br>
           ですので、さらに売上アップを測りたい先生は、今の単価メニューとは別メニューで単価２倍、３倍が可能な高単価メニューを取り入れると月商がさらに高くなります。
-        </p>
-        
-        <p style="font-size: 15px; line-height: 1.8; color: #333; margin-bottom: 20px;">
-          仮に「もし単価を２倍３倍にしたらどうなる？」といったシミュレーションをしたい場合は、現在の施術単価に入力して遊んでみてください。
         </p>
         
         <p style="font-size: 16px; line-height: 1.8; color: #2E5B8A; font-weight: bold; margin-top: 30px; padding: 20px; background: #f0f7ff; border-left: 4px solid #2E5B8A; border-radius: 5px;">
