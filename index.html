@@ -252,6 +252,99 @@
       font-size: 22px;
       margin-bottom: 30px;
     }
+    
+    .bar-chart-section {
+  padding: 30px 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.bar-chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 60px;
+  height: 300px;
+  margin: 30px 0;
+}
+
+.bar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 120px;
+}
+
+.bar {
+  width: 100%;
+  border-radius: 15px 15px 0 0;
+  transition: height 0.8s ease;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.bar.current {
+  background: #d0d0d0;
+  height: 120px;
+}
+
+.bar.future {
+  background: linear-gradient(to top, #2E5B8A, #5a8fc4);
+  height: 250px;
+}
+
+.bar-label {
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.bar-value {
+  margin-top: 8px;
+  font-size: 16px;
+  color: #2E5B8A;
+  font-weight: bold;
+}
+
+.increase-text {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 16px;
+  color: #666;
+}
+
+.increase-text .amount {
+  color: #4CAF50;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .bar-chart-container {
+    gap: 40px;
+    height: 250px;
+  }
+  
+  .bar-item {
+    width: 100px;
+  }
+  
+  .bar.current {
+    height: 100px;
+  }
+  
+  .bar.future {
+    height: 200px;
+  }
 }
   </style>
 </head>
@@ -334,6 +427,28 @@
          <div class="value">¥<span id="product-revenue">300,000</span></div>
          <div class="formula">カルテ枚数の30%×10,000円/月（目安）</div>
         </div>
+
+        <div class="bar-chart-section">
+  <h3 style="text-align: center; margin-bottom: 20px; color: #2E5B8A; border: none;">現在と未来の売上比較</h3>
+  
+  <div class="bar-chart-container">
+    <div class="bar-item">
+      <div class="bar current" id="current-bar"></div>
+      <div class="bar-label">現在</div>
+      <div class="bar-value">¥<span id="current-bar-value">2,500,000</span></div>
+    </div>
+    
+    <div class="bar-item">
+      <div class="bar future" id="future-bar"></div>
+      <div class="bar-label">未来</div>
+      <div class="bar-value">¥<span id="future-bar-value">2,800,000</span></div>
+    </div>
+  </div>
+  
+  <div class="increase-text">
+    ↑ 増加額: <span class="amount">+ ¥<span id="bar-difference">300,000</span></span>
+  </div>
+</div>
 
         <div class="result-item-highlight">
           <span class="label">高単価メニュー導入後の月間総売上予測</span>
@@ -425,6 +540,20 @@
       document.getElementById('product-revenue').textContent = productRevenue.toLocaleString();
       document.getElementById('total-sales').textContent = totalSales.toLocaleString();
       document.getElementById('difference').textContent = difference.toLocaleString();
+
+      // 棒グラフの数値を更新
+document.getElementById('current-bar-value').textContent = monthlySales.toLocaleString();
+document.getElementById('future-bar-value').textContent = totalSales.toLocaleString();
+document.getElementById('bar-difference').textContent = difference.toLocaleString();
+
+// 棒グラフの高さを動的に調整
+const maxHeight = 250;
+const minHeight = 80;
+const currentHeight = Math.max(minHeight, (monthlySales / totalSales) * maxHeight);
+const futureHeight = maxHeight;
+
+document.getElementById('current-bar').style.height = currentHeight + 'px';
+document.getElementById('future-bar').style.height = futureHeight + 'px';
     }
      
     document.addEventListener('DOMContentLoaded', function() {
