@@ -252,50 +252,6 @@
       font-size: 22px;
       margin-bottom: 30px;
     }
-
-    comparison-section {
-  padding: 30px 20px;
-  background: #f8f9fa;
-  border-radius: 12px;
-  margin-top: 20px;
-  margin-bottom: 30px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-
-.comparison-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-
-.comparison-item {
-  text-align: center;
-}
-
-.comparison-label {
-  font-size: 16px;
-  color: #666;
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-
-.comparison-value {
-  font-size: 24px;
-  font-weight: bold;
-  padding: 20px;
-  border-radius: 12px;
-  text-align: center;
-}
-
-@media (max-width: 768px) {
-  .comparison-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .comparison-section {
-    padding: 20px;
-  }
 }
   </style>
 </head>
@@ -379,32 +335,6 @@
          <div class="formula">カルテ枚数の30%×10,000円/月（目安）</div>
         </div>
 
-        <div class="comparison-section">
-  <h3 style="text-align: center; margin-bottom: 20px; color: #2E5B8A;">現在と未来の売上比較</h3>
-  
-  <div class="comparison-grid">
-    <div class="comparison-item">
-      <div class="comparison-label">現在</div>
-      <div class="comparison-value" style="background: #f8f9fa; border: 2px solid #ddd; border-radius: 12px; padding: 20px; text-align: center;">
-        <div style="font-size: 18px; color: #2E5B8A; margin-bottom: 10px;">今の売上</div>
-        <div style="font-size: 24px; font-weight: bold; color: #2E5B8A;">¥<span id="current-sales">2,500,000</span></div>
-      </div>
-    </div>
-    
-    <div class="comparison-item">
-      <div class="comparison-label">未来</div>
-      <div class="comparison-value" style="background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); border: 2px solid #4CAF50; border-radius: 12px; padding: 20px; text-align: center; color: white;">
-        <div style="font-size: 18px; margin-bottom: 10px;">高単価導入後</div>
-        <div style="font-size: 24px; font-weight: bold;">¥<span id="future-sales">2,800,000</span></div>
-      </div>
-    </div>
-  </div>
-  
-  <div style="text-align: center; margin-top: 15px; font-size: 14px; color: #666;">
-    <div>↑ 増加額: <span style="color: #4CAF50; font-weight: bold;">+ ¥<span id="sales-difference">300,000</span></span></div>
-  </div>
-</div>
-
         <div class="result-item-highlight">
           <span class="label">高単価メニュー導入後の月間総売上予測</span>
           <div class="value">¥<span id="total-sales">1,300,000</span></div>
@@ -483,11 +413,6 @@
       // 物販売上げ(サブスク)
       const productRevenue = medicalCases * 0.3 * 10000;
 
-      // 比較表の数値も更新
-document.getElementById('current-sales').textContent = monthlySales.toLocaleString();
-document.getElementById('future-sales').textContent = totalSales.toLocaleString();
-document.getElementById('sales-difference').textContent = difference.toLocaleString();
-      
       // 高単価メニュー導入後の月間総売上予測
       const totalSales = monthlySales + premiumRevenue + productRevenue;
       
