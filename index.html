@@ -34,7 +34,7 @@
     .result-item .label { font-weight: 500; color: #333; font-size: 16px; }
     .result-item .value { font-weight: 700; color: #2E5B8A; font-size: 18px; text-align: right; }
     .result-item .formula { width: 100%; font-size: 12px; color: #999; margin-top: 5px; text-align: right; }
-    .result-item-highlight { background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); padding: 20px; margin-top: 20px; margin-bottom: 15px; border-radius: 8px; border-left: 6px solid #ff9800; box-shadow: 0 4px 15px rgba(255, 152, 0, 0.2); text-align: center; }
+    .result-item-highlight { background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); padding: 20px; margin-top: 20px; margin-bottom: 15px; border-radius: 8px; border-left: 6px solid #ff9; box-shadow: 8000 4px 15px rgba(255, 152, 0, 0.2); text-align: center; }
     .result-item-highlight .label { display: block; color: #e65100; margin-bottom: 10px; font-size: 20px; font-weight: bold; }
     .result-item-highlight .value { font-size: 32px; font-weight: bold; color: #ff6f00; margin-bottom: 5px; }
     .explanation-section { padding: 40px 30px; background: #f8f9fa; }
@@ -54,6 +54,48 @@
     footer { text-align: center; padding: 30px 20px; background: linear-gradient(135deg, #2E5B8A 0%, #1e3a5f 100%); color: white; font-size: 13px; margin-top: 0; }
     footer p { margin-bottom: 8px; line-height: 1.6; }
     footer p:last-child { margin-bottom: 0; opacity: 0.8; }
+
+    /* スマホ対応 - 完全修正版 */
+    @media (max-width: 768px) {
+      body { padding: 10px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .header { padding: 30px 20px; }
+      .header h1 { font-size: 20px; line-height: 1.5; }
+      .header p { font-size: 13px; }
+      .input-section { padding: 30px 20px; border-right: none; }
+      .results-section { padding: 30px 20px; }
+      h3 { font-size: 18px; margin-bottom: 20px; }
+      .result-item { padding: 12px 15px; flex-direction: column; align-items: flex-start; gap: 8px; }
+      .result-item .label { font-size: 15px; width: 100%; }
+      .result-item .value { font-size: 17px; text-align: left; width: 100%; }
+      .bar-chart-section { padding: 25px 15px; margin-top: 20px; margin-bottom: 20px; }
+      .bar-chart-section h3 { font-size: 16px; margin-bottom: 50px; padding: 0 5px; }
+      .bar-chart-container { gap: 40px; height: 200px; margin: 0 auto 25px auto; max-width: 100%; }
+      .bar-chart-container::before { left: 5%; right: 5%; }
+      .bar-item { width: 90px; min-width: 90px; }
+      .bar-label { font-size: 16px; margin-top: 12px; }
+      .bar-value { font-size: 13px; margin-top: 6px; white-space: nowrap; }
+      .increase-text { font-size: 14px; margin-top: 25px; padding: 0 10px; }
+      .increase-text .amount { font-size: 16px; }
+      .explanation-section { padding: 30px 20px; }
+      .explanation-section h3 { font-size: 18px; margin-bottom: 25px; }
+      .explanation-section > div { padding: 25px 20px; }
+      .explanation-section p { font-size: 14px; line-height: 1.7; }
+      .explanation-section ul { font-size: 14px; line-height: 1.7; padding-left: 18px; }
+      footer { padding: 25px 20px; font-size: 12px; }
+    }
+
+    /* 極小画面用 */
+    @media (max-width: 400px) {
+      body { padding: 8px; }
+      .header { padding: 25px 15px; }
+      .header h1 { font-size: 18px; }
+      .input-section, .results-section { padding: 25px 15px; }
+      .bar-chart-section { padding: 20px 10px; }
+      .bar-chart-container { gap: 30px; }
+      .bar-item { width: 80px; min-width: 80px; }
+      .bar-value { font-size: 12px; }
+    }
   </style>
 </head>
 <body>
@@ -68,31 +110,76 @@
       <div class="input-section">
         <p class="note">※仮の数値が入力されていますのであなたのリアルな数字を入力してください。</p>
         <h3>今の単価と患者数</h3>
-        <div class="form-group"><label for="current-price">今の単価(円)</label><input type="number" id="current-price" value="10000"></div>
-        <div class="form-group"><label for="patient-count">今の単価の1日の患者数(人)</label><input type="number" id="patient-count" value="10"></div>
-        <div class="form-group"><label for="work-days">月の稼働日数(日)</label><input type="number" id="work-days" value="25"></div>
+        <div class="form-group">
+          <label for="current-price">今の単価(円)</label>
+          <input type="number" id="current-price" value="10000">
+        </div>
+        <div class="form-group">
+          <label for="patient-count">今の単価の1日の患者数(人)</label>
+          <input type="number" id="patient-count" value="10">
+        </div>
+        <div class="form-group">
+          <label for="work-days">月の稼働日数(日)</label>
+          <input type="number" id="work-days" value="25">
+        </div>
         <div class="subsection-title">高単価メニューを導入した未来</div>
-        <div class="form-group"><label>目標単価設定</label><div class="button-group"><button type="button" class="multiplier-btn" onclick="setMultiplier(2)">今の単価の<br>約2倍</button><button type="button" class="multiplier-btn" onclick="setMultiplier(3)">今の単価の<br>約3倍</button></div></div>
-        <div class="form-group"><label for="future-price">未来の単価(円) ※自動計算</label><input type="number" id="future-price" value="0" disabled></div>
-        <div class="form-group"><label for="premium-patients">高単価患者の人数予測(人/日)</label><input type="number" id="premium-patients" value="5"></div>
+        <div class="form-group">
+          <label>目標単価設定</label>
+          <div class="button-group">
+            <button type="button" class="multiplier-btn" onclick="setMultiplier(2)">今の単価の<br>約2倍</button>
+            <button type="button" class="multiplier-btn" onclick="setMultiplier(3)">今の単価の<br>約3倍</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="future-price">未来の単価(円) ※自動計算</label>
+          <input type="number" id="future-price" value="0" disabled>
+        </div>
+        <div class="form-group">
+          <label for="premium-patients">高単価患者の人数予測(人/日)</label>
+          <input type="number" id="premium-patients" value="5">
+        </div>
         <div class="subsection-title">未来のもう一つの収入の柱(物販サブスク)</div>
-        <div class="form-group"><label for="medical-cases">カルテ枚数(枚)</label><input type="number" id="medical-cases" value="100"></div>
+        <div class="form-group">
+          <label for="medical-cases">カルテ枚数(枚)</label>
+          <input type="number" id="medical-cases" value="100">
+        </div>
         <button class="calculate-btn" onclick="calculateResults()">結果を算出</button>
       </div>
       <div class="results-section">
         <h3>リアル算出結果</h3>
-        <div class="result-item"><span class="label">今の売上(月)</span><span class="value">¥<span id="monthly-sales">2,500,000</span></span></div>
-        <div class="result-item"><span class="label">高単価メニューによる売上(月)</span><span class="value">¥<span id="premium-revenue">0</span></span></div>
-        <div class="result-item"><div class="label">物販売上げ(サブスク)</div><div class="value">¥<span id="product-revenue">300,000</span></div><div class="formula">カルテ枚数の30%×10,000円/月（目安）</div></div>
+        <div class="result-item">
+          <span class="label">今の売上(月)</span>
+          <span class="value">ﾥ<span id="monthly-sales">2,500,000</span></span>
+        </div>
+        <div class="result-item">
+          <span class="label">高単価メニューによる売上(月)</span>
+          <span class="value">ﾥ<span id="premium-revenue">0</span></span>
+        </div>
+        <div class="result-item">
+          <div class="label">物販売上げ(サブスク)</div>
+          <div class="value">ﾥ<span id="product-revenue">300,000</span></div>
+          <div class="formula">カルテ枚数の30%×10,000円/月（目安）</div>
+        </div>
         <div class="bar-chart-section">
           <h3>現在と未来の売上比較</h3>
           <div class="bar-chart-container">
-            <div class="bar-item"><div class="bar current" id="current-bar"></div><div class="bar-label">現在</div><div class="bar-value">¥<span id="current-bar-value">2,500,000</span></div></div>
-            <div class="bar-item"><div class="bar future" id="future-bar"></div><div class="bar-label">未来</div><div class="bar-value">¥<span id="future-bar-value">2,800,000</span></div></div>
+            <div class="bar-item">
+              <div class="bar current" id="current-bar"></div>
+              <div class="bar-label">現在</div>
+              <div class="bar-value">ﾥ<span id="current-bar-value">2,500,000</span></div>
+            </div>
+            <div class="bar-item">
+              <div class="bar future" id="future-bar"></div>
+              <div class="bar-label">未来</div>
+              <div class="bar-value">ﾥ<span id="future-bar-value">2,800,000</span></div>
+            </div>
           </div>
-          <div class="increase-text">現在の売上に <span class="amount">+ ¥<span id="bar-difference">300,000</span></span></div>
+          <div class="increase-text">現在の売上に <span class="amount">+ ﾥ<span id="bar-difference">300,000</span></span></div>
         </div>
-        <div class="result-item-highlight"><span class="label">高単価メニュー導入後の月間総売上予測</span><div class="value">¥<span id="total-sales">2,800,000</span></div></div>
+        <div class="result-item-highlight">
+          <span class="label">高単価メニュー導入後の月間総売上予測</span>
+          <div class="value">ﾥ<span id="total-sales">2,800,000</span></div>
+        </div>
       </div>
     </div>
     <div class="explanation-section">
