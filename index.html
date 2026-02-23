@@ -1,575 +1,606 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>鍼灸院経営シミュレーション</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      padding: 20px;
-      min-height: 100vh;
-    }
-    
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      overflow: hidden;
-    }
-    
-    .header {
-      background: linear-gradient(135deg, #2E5B8A 0%, #1e3a5f 100%);
-      color: white;
-      padding: 40px 30px;
-      text-align: center;
-    }
-    
-    .header h1 {
-      font-size: 28px;
-      margin-bottom: 15px;
-      font-weight: bold;
-    }
-    
-    .header p {
-      font-size: 14px;
-      line-height: 1.6;
-      opacity: 0.8;
-    }
-    
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
-    }
-    
-    @media (max-width: 768px) {
-      .form-grid {
-        grid-template-columns: 1fr;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鍼灸院経営シミュレーション</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
       }
-    }
-    
-    .input-section {
-      background: #f8f9fa;
-      padding: 40px 30px;
-      border-right: 2px solid #e0e0e0;
-    }
-    
-    .results-section {
-      background: #ffffff;
-      padding: 40px 30px;
-    }
-    
-    h3 {
-      font-size: 20px;
-      margin-bottom: 25px;
-      color: #2E5B8A;
-      border-bottom: 3px solid #4CAF50;
-      padding-bottom: 10px;
-    }
-    
-    .subsection-title {
-      font-size: 16px;
-      margin-top: 30px;
-      margin-bottom: 20px;
-      color: #2E5B8A;
-      font-weight: bold;
-      border-bottom: 2px solid #ff9800;
-      padding-bottom: 8px;
-    }
-    
-    .form-group {
-      margin-bottom: 20px;
-    }
-    
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-      color: #333;
-      font-size: 14px;
-    }
-    
-    input[type="number"] {
-      width: 100%;
-      padding: 12px 15px;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      font-size: 16px;
-      transition: all 0.3s;
-    }
-    
-    input[type="number"]:focus {
-      outline: none;
-      border-color: #2E5B8A;
-      box-shadow: 0 0 0 3px rgba(46, 91, 138, 0.1);
-    }
-    
-    input[type="number"]:disabled {
-      background-color: #e9ecef;
-      color: #333;
-      -webkit-text-fill-color: #333;
-      opacity: 1;
-      cursor: not-allowed;
-    }
-    
-    .button-group {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-    
-    .multiplier-btn {
-      flex: 1;
-      padding: 12px 20px;
-      border: 2px solid #2E5B8A;
-      background: white;
-      color: #2E5B8A;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: bold;
-      transition: all 0.3s;
-    }
-    
-    .multiplier-btn:hover {
-      background: #f0f7ff;
-    }
-    
-    .multiplier-btn.active {
-      background: #2E5B8A;
-      color: white;
-    }
-    
-    .note {
-      font-size: 12px;
-      color: #666;
-      margin-top: 5px;
-    }
-    
-    button.calculate-btn {
-      width: 100%;
-      background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-      color: white;
-      padding: 15px 30px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 18px;
-      font-weight: bold;
-      margin-top: 30px;
-      transition: all 0.3s;
-      box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-    }
-    
-    button.calculate-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
-    }
-    
-    button.calculate-btn:active {
-      transform: translateY(0);
-    }
-    
-   .result-item {
-     background: #f8f9fa;
-     padding: 15px;
-     margin-bottom: 15px;
-     border-radius: 8px;
-     border-left: 4px solid #4CAF50;
-     display: flex;
-     justify-content: space-between;
-     align-items: center;
-     flex-wrap: wrap;
-   }
 
-    .result-item .label {
-      font-weight: 500;
-      color: #333;
-      font-size: 16px;
-    }
-    
-    .result-item .value {
-      font-weight: 700;
-      color: #2E5B8A;
-      font-size: 18px;
-      text-align: right;
-    }
+      body {
+        font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 20px;
+        min-height: 100vh;
+      }
 
-    .result-item .formula {
-      width: 100%;
-      font-size: 12px;
-      color: #999;
-      margin-top: 5px;
-      text-align: right;
-    }
-    
-    .result-item-highlight {
-      background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
-      padding: 20px;
-      margin-top: 20px;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      border-left: 6px solid #ff9800;
-      box-shadow: 0 4px 15px rgba(255, 152, 0, 0.2);
-      text-align: center;
-    }
-    
-    .result-item-highlight .label {
-      display: block;
-      color: #e65100;
-      margin-bottom: 10px;
-      font-size: 20px;
-      font-weight: bold;
-    }
-    
-    .result-item-highlight .value {
-      font-size: 32px;
-      font-weight: bold;
-      color: #ff6f00;
-      margin-bottom: 5px;
-    }
-    
-    .result-item-highlight .difference {
-      font-size: 16px;
-      color: #4CAF50;
-      font-weight: 600;
-    }
-    
-    .explanation-section {
-      padding: 40px 30px;
-      background: #f8f9fa;
-    }
-    
-    .explanation-section h3 {
-      text-align: center;
-      font-size: 22px;
-      margin-bottom: 30px;
-    }
-    
-    .bar-chart-section {
-      padding: 30px 20px;
-      background: #f8f9fa;
-      border-radius: 12px;
-      margin-top: 20px;
-      margin-bottom: 30px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+      }
 
-    .bar-chart-section h3 {
-      text-align: center;
-      margin-bottom: 40px;
-      color: #2E5B8A;
-      border: none;
-      padding-bottom: 0;
-    }
+      .header {
+        background: linear-gradient(135deg, #2e5b8a 0%, #1e3a5f 100%);
+        color: white;
+        padding: 40px 30px;
+        text-align: center;
+      }
 
-    .bar-chart-container {
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      gap: 60px;
-      height: 300px;
-      margin: 30px 0;
-    }
+      .header h1 {
+        font-size: 28px;
+        margin-bottom: 15px;
+        font-weight: bold;
+      }
 
-    .bar-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 120px;
-    }
+      .header p {
+        font-size: 14px;
+        line-height: 1.6;
+        opacity: 0.8;
+      }
 
-    .bar {
-      width: 100%;
-      border-radius: 15px 15px 0 0;
-      transition: height 0.8s ease;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      padding-bottom: 10px;
-      color: white;
-      font-weight: bold;
-      font-size: 14px;
-    }
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+      }
 
-    .bar.current {
-      background: #d0d0d0;
-      height: 120px;
-    }
+      @media (max-width: 768px) {
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+      }
 
-    .bar.future {
-      background: linear-gradient(to top, #2E5B8A, #5a8fc4);
-      height: 250px;
-    }
+      .input-section {
+        background: #f8f9fa;
+        padding: 40px 30px;
+        border-right: 2px solid #e0e0e0;
+      }
 
-    .bar-label {
-      margin-top: 15px;
-      font-size: 18px;
-      font-weight: bold;
-      color: #333;
-    }
+      .results-section {
+        background: #ffffff;
+        padding: 40px 30px;
+      }
 
-    .bar-value {
-      margin-top: 8px;
-      font-size: 16px;
-      color: #2E5B8A;
-      font-weight: bold;
-    }
+      h3 {
+        font-size: 20px;
+        margin-bottom: 25px;
+        color: #2e5b8a;
+        border-bottom: 3px solid #4caf50;
+        padding-bottom: 10px;
+      }
 
-    .increase-text {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 16px;
-      color: #666;
-    }
+      .subsection-title {
+        font-size: 16px;
+        margin-top: 30px;
+        margin-bottom: 20px;
+        color: #2e5b8a;
+        font-weight: bold;
+        border-bottom: 2px solid #ff9800;
+        padding-bottom: 8px;
+      }
 
-    .increase-text .amount {
-      color: #4CAF50;
-      font-weight: bold;
-      font-size: 18px;
-    }
+      .form-group {
+        margin-bottom: 20px;
+      }
 
-    @media (max-width: 768px) {
-      .bar-chart-section h3 {
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #333;
+        font-size: 14px;
+      }
+
+      input[type='number'] {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s;
+      }
+
+      input[type='number']:focus {
+        outline: none;
+        border-color: #2e5b8a;
+        box-shadow: 0 0 0 3px rgba(46, 91, 138, 0.1);
+      }
+
+      input[type='number']:disabled {
+        background-color: #e9ecef;
+        color: #333;
+        -webkit-text-fill-color: #333;
+        opacity: 1;
+        cursor: not-allowed;
+      }
+
+      .button-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+
+      .multiplier-btn {
+        flex: 1;
+        padding: 12px 20px;
+        border: 2px solid #2e5b8a;
+        background: white;
+        color: #2e5b8a;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        transition: all 0.3s;
+      }
+
+      .multiplier-btn:hover {
+        background: #f0f7ff;
+      }
+
+      .multiplier-btn.active {
+        background: #2e5b8a;
+        color: white;
+      }
+
+      .note {
+        font-size: 12px;
+        color: #666;
+        margin-top: 5px;
+      }
+
+      button.calculate-btn {
+        width: 100%;
+        background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 30px;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+      }
+
+      button.calculate-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+      }
+
+      button.calculate-btn:active {
+        transform: translateY(0);
+      }
+
+      .result-item {
+        background: #f8f9fa;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        border-left: 4px solid #4caf50;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .result-item .label {
+        font-weight: 500;
+        color: #333;
+        font-size: 16px;
+      }
+
+      .result-item .value {
+        font-weight: 700;
+        color: #2e5b8a;
+        font-size: 18px;
+        text-align: right;
+      }
+
+      .result-item .formula {
+        width: 100%;
+        font-size: 12px;
+        color: #999;
+        margin-top: 5px;
+        text-align: right;
+      }
+
+      .result-item-highlight {
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        padding: 20px;
+        margin-top: 20px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        border-left: 6px solid #ff9800;
+        box-shadow: 0 4px 15px rgba(255, 152, 0, 0.2);
+        text-align: center;
+      }
+
+      .result-item-highlight .label {
+        display: block;
+        color: #e65100;
+        margin-bottom: 10px;
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .result-item-highlight .value {
+        font-size: 32px;
+        font-weight: bold;
+        color: #ff6f00;
+        margin-bottom: 5px;
+      }
+
+      .result-item-highlight .difference {
+        font-size: 16px;
+        color: #4caf50;
+        font-weight: 600;
+      }
+
+      .explanation-section {
+        padding: 40px 30px;
+        background: #f8f9fa;
+      }
+
+      .explanation-section h3 {
+        text-align: center;
+        font-size: 22px;
         margin-bottom: 30px;
       }
-      
-      .bar-chart-container {
-        gap: 40px;
-        height: 250px;
+
+      .bar-chart-section {
+        padding: 30px 20px;
+        background: #f8f9fa;
+        border-radius: 12px;
         margin-top: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
       }
-      
+
+      .bar-chart-section h3 {
+        text-align: center;
+        margin-bottom: 40px;
+        color: #2e5b8a;
+        border: none;
+        padding-bottom: 20px;
+      }
+
+      .bar-chart-container {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        gap: 60px;
+        height: 300px;
+        margin: 70px 0 30px 0;
+      }
+
       .bar-item {
-        width: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 120px;
       }
-      
+
+      .bar {
+        width: 100%;
+        border-radius: 15px 15px 0 0;
+        transition: height 0.8s ease;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding-bottom: 10px;
+        color: white;
+        font-weight: bold;
+        font-size: 14px;
+      }
+
       .bar.current {
-        height: 100px;
+        background: #d0d0d0;
+        height: 120px;
       }
-      
+
       .bar.future {
-        height: 200px;
+        background: linear-gradient(to top, #2e5b8a, #5a8fc4);
+        height: 250px;
       }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>高単価メニュー導入後の『未来予想図』簡単シミュレーション</h1>
-      <p>このシミュレーターは、単なる計算機ではありません。<br>
-        先生が「技術を磨くこと」が、いかにして<br>「自由な時間」と「精神的なゆとり」<br>
-        そして「揺るぎない収益」に直結するかを可視化する未来予想図です。</p>
-      <br>
-      <p>「今の単価と患者数」<br>「高単価メニューを導入した未来」<br>「未来のもう一つの収入の柱」<br>を入力して「結果を算出」ボタンを押してください。<br>
-         「リアル算出結果」に高単価メニューを導入した場合の売上／月のイメージの算出結果が表示されます。</p>
-    </div>
 
-    <div class="form-grid">
-      <div class="input-section">
-        <h3>今の単価と患者数</h3>
-        
-        <div class="form-group">
-          <label for="current-price">今の単価(円)</label>
-          <input type="number" id="current-price" value="10000">
-        </div>
-        
-        <div class="form-group">
-          <label for="patient-count">今の単価の1日の患者数(人)</label>
-          <input type="number" id="patient-count" value="10">
-        </div>
-        
-        <div class="form-group">
-          <label for="work-days">月の稼働日数(日)</label>
-          <input type="number" id="work-days" value="25">
-        </div>
-        
-        <div class="subsection-title">高単価メニューを導入した未来</div>
-        
-        <div class="form-group">
-          <label>目標単価設定</label>
-          <div class="button-group">
-            <button type="button" class="multiplier-btn" onclick="setMultiplier(2)">今の単価の<br>約2倍</button>
-            <button type="button" class="multiplier-btn" onclick="setMultiplier(3)">今の単価の<br>約3倍</button>
-          </div>
-        </div>
-        
-        <div class="form-group">
-          <label for="future-price">未来の単価(円) ※自動計算</label>
-          <input type="number" id="future-price" value="0" disabled>
-        </div>
-        
-        <div class="form-group">
-          <label for="premium-patients">高単価患者の人数予測(人/日)</label>
-          <input type="number" id="premium-patients" value="5">
-        </div>
-        
-        <div class="subsection-title">未来のもう一つの収入の柱(物販サブスク)</div>
-        
-        <div class="form-group">
-          <label for="medical-cases">カルテ枚数(枚)</label>
-          <input type="number" id="medical-cases" value="100">
-        </div>
-        
-        <button class="calculate-btn" onclick="calculateResults()">結果を算出</button>
+      .bar-label {
+        margin-top: 15px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .bar-value {
+        margin-top: 8px;
+        font-size: 16px;
+        color: #2e5b8a;
+        font-weight: bold;
+      }
+
+      .increase-text {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 16px;
+        color: #666;
+      }
+
+      .increase-text .amount {
+        color: #4caf50;
+        font-weight: bold;
+        font-size: 18px;
+      }
+
+      @media (max-width: 768px) {
+        .bar-chart-section h3 {
+          margin-bottom: 35px;
+          padding-bottom: 15px;
+        }
+
+        .bar-chart-container {
+          gap: 40px;
+          height: 250px;
+          margin-top: 60px;
+        }
+
+        .bar-item {
+          width: 100px;
+        }
+
+        .bar.current {
+          height: 100px;
+        }
+
+        .bar.future {
+          height: 200px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>高単価メニュー導入後の『未来予想図』簡単シミュレーション</h1>
+        <p>
+          このシミュレーターは、単なる計算機ではありません。<br>
+          先生が「技術を磨くこと」が、いかにして<br>「自由な時間」と「精神的なゆとり」<br>
+          そして「揺るぎない収益」に直結するかを可視化する未来予想図です。
+        </p>
+        <br>
+        <p>
+          「今の単価と患者数」<br>「高単価メニューを導入した未来」<br>「未来のもう一つの収入の柱」<br>を入力して「結果を算出」ボタンを押してください。<br>
+          「リアル算出結果」に高単価メニューを導入した場合の売上／月のイメージの算出結果が表示されます。
+        </p>
       </div>
 
-      <div class="results-section">
-        <h3>リアル算出結果</h3>
+      <div class="form-grid">
+        <div class="input-section">
+          <p class="note">※仮の数値が入力されていますのであなたのリアルな数字を入力してください。</p>
         
-        <div class="result-item">
-          <span class="label">今の売上(月)</span>
-          <span class="value">¥<span id="monthly-sales">2,500,000</span></span>
-        </div>
-        
-        <div class="result-item">
-          <span class="label">高単価メニューによる売上(月)</span>
-          <span class="value">¥<span id="premium-revenue">0</span></span>
-        </div>
+          <h3>今の単価と患者数</h3>
 
-        <div class="result-item">
-         <div class="label">物販売上げ(サブスク)</div>
-         <div class="value">¥<span id="product-revenue">300,000</span></div>
-         <div class="formula">カルテ枚数の30%×10,000円/月(目安)</div>
-        </div>
+          <div class="form-group">
+            <label for="current-price">今の単価(円)</label>
+            <input type="number" id="current-price" value="10000">
+          </div>
 
-        <div class="bar-chart-section">
-          <h3>現在と未来の売上比較</h3>
-  
-          <div class="bar-chart-container">
-            <div class="bar-item">
-              <div class="bar current" id="current-bar"></div>
-              <div class="bar-label">現在</div>
-              <div class="bar-value">¥<span id="current-bar-value">2,500,000</span></div>
+          <div class="form-group">
+            <label for="patient-count">今の単価の1日の患者数(人)</label>
+            <input type="number" id="patient-count" value="10">
+          </div>
+
+          <div class="form-group">
+            <label for="work-days">月の稼働日数(日)</label>
+            <input type="number" id="work-days" value="25">
+          </div>
+
+          <div class="subsection-title">高単価メニューを導入した未来</div>
+
+          <div class="form-group">
+            <label>目標単価設定</label>
+            <div class="button-group">
+              <button type="button" class="multiplier-btn" onclick="setMultiplier(2)">今の単価の<br>約2倍</button>
+              <button type="button" class="multiplier-btn" onclick="setMultiplier(3)">今の単価の<br>約3倍</button>
             </div>
-    
-            <div class="bar-item">
-              <div class="bar future" id="future-bar"></div>
-              <div class="bar-label">未来</div>
-              <div class="bar-value">¥<span id="future-bar-value">2,800,000</span></div>
+          </div>
+
+          <div class="form-group">
+            <label for="future-price">未来の単価(円) ※自動計算</label>
+            <input type="number" id="future-price" value="0" disabled>
+          </div>
+
+          <div class="form-group">
+            <label for="premium-patients">高単価患者の人数予測(人/日)</label>
+            <input type="number" id="premium-patients" value="5">
+          </div>
+
+          <div class="subsection-title">未来のもう一つの収入の柱(物販サブスク)</div>
+
+          <div class="form-group">
+            <label for="medical-cases">カルテ枚数(枚)</label>
+            <input type="number" id="medical-cases" value="100">
+          </div>
+
+          <button class="calculate-btn" onclick="calculateResults()">結果を算出</button>
+        </div>
+
+        <div class="results-section">
+          <h3>リアル算出結果</h3>
+
+          <div class="result-item">
+            <span class="label">今の売上(月)</span>
+            <span class="value">¥<span id="monthly-sales">2,500,000</span></span>
+          </div>
+
+          <div class="result-item">
+            <span class="label">高単価メニューによる売上(月)</span>
+            <span class="value">¥<span id="premium-revenue">0</span></span>
+          </div>
+
+          <div class="result-item">
+            <div class="label">物販売上げ(サブスク)</div>
+            <div class="value">¥<span id="product-revenue">300,000</span></div>
+            <div class="formula">カルテ枚数の30%×10,000円/月(目安)</div>
+          </div>
+
+          <div class="bar-chart-section">
+            <h3>現在と未来の売上比較</h3>
+
+            <div class="bar-chart-container">
+              <div class="bar-item">
+                <div class="bar current" id="current-bar"></div>
+                <div class="bar-label">現在</div>
+                <div class="bar-value">¥<span id="current-bar-value">2,500,000</span></div>
+              </div>
+
+              <div class="bar-item">
+                <div class="bar future" id="future-bar"></div>
+                <div class="bar-label">未来</div>
+                <div class="bar-value">¥<span id="future-bar-value">2,800,000</span></div>
+              </div>
+            </div>
+
+            <div class="increase-text">
+              現在の売上に <span class="amount">+ ¥<span id="bar-difference">300,000</span></span>
             </div>
           </div>
-  
-          <div class="increase-text">
-            現在の売上に <span class="amount">+ ¥<span id="bar-difference">300,000</span></span>
+
+          <div class="result-item-highlight">
+            <span class="label">高単価メニュー導入後の月間総売上予測</span>
+            <div class="value">¥<span id="total-sales">2,800,000</span></div>
           </div>
         </div>
+      </div>
 
-        <div class="result-item-highlight">
-          <span class="label">高単価メニュー導入後の月間総売上予測</span>
-          <div class="value">¥<span id="total-sales">2,800,000</span></div>
+      <div class="explanation-section">
+        <h3>シミュレーション結果はいかがでしたか？</h3>
+
+        <div style="
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          ">
+          <p style="font-size: 15px; line-height: 1.8; color: #333; margin-bottom: 20px">
+            今の鍼灸院の現状と高単価メニューを導入した場合の具体的な数値を入力することで、まだまだ売上の伸び代があることにお気づきになられたのではないでしょうか?
+          </p>
+
+          <p style="font-size: 15px; line-height: 1.8; color: #333; margin-bottom: 15px">それは、</p>
+
+          <ul style="font-size: 15px; line-height: 1.8; color: #333; margin-bottom: 20px; padding-left: 20px">
+            <li>高単価メニュー導入で増収益が実現可能になること。</li>
+            <li>単価を２倍３倍にすることで具体的なイメージができて、こんなにも増収益になること。</li>
+            <li>物販の売上も増収益になること。</li>
+          </ul>
+
+          <p style="font-size: 15px; line-height: 1.8; color: #333; margin-bottom: 20px">
+            現在の施術単価の月売上は、単価が2倍、施術人数が半分になっても同じです。<br>
+            ですので、さらに売上アップを測りたい先生は、今の単価メニューとは別メニューで単価２倍、３倍が可能な高単価メニューを取り入れると月商がさらに高くなります。
+          </p>
+
+          <p style="
+              font-size: 16px;
+              line-height: 1.8;
+              color: #2e5b8a;
+              font-weight: bold;
+              margin-top: 30px;
+              padding: 20px;
+              background: #f0f7ff;
+              border-left: 4px solid #2e5b8a;
+              border-radius: 5px;
+            ">
+            もし、この高単価メニューを取り入れ、鍼灸院の未来予想図を実現したいと思われたなら、その全てがマルッと実現可能なリバランス整顔美容鍼で一緒に成長していきましょう！
+          </p>
+
+          <p style="font-size: 15px; line-height: 1.8; color: #333; margin-top: 25px; text-align: center">
+            もし、今すぐにでも気になる方は<a href="https://utage-system.com/p/6JSbuP6HZiKl" target="_blank" style="color: #e53935; text-decoration: underline; font-weight: bold">こちらをクリック</a>してください。
+          </p>
         </div>
       </div>
     </div>
 
+    <script>
+      let currentMultiplier = 0;
 
-    <div class="explanation-section">
-      <h3>シミュレーション結果はいかがでしたか？</h3>
-      
-      <div style="max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-        <p style="font-size: 15px; line-height: 1.8; color: #333; margin-bottom: 20px;">
-          今の鍼灸院の現状と高単価メニューを導入した場合の具体的な数値を入力することで、まだまだ売上の伸び代があることにお気づきになられたのではないでしょうか?
-        </p>
-        
-        <p style="font-size: 15px; line-height: 1.8; color: #333; margin-bottom: 15px;">それは、</p>
-        
-        <ul style="font-size: 15px; line-height: 1.8; color: #333; margin-bottom: 20px; padding-left: 20px;">
-          <li>高単価メニュー導入で増収益が実現可能になること。</li>
-          <li>単価を２倍３倍にすることで具体的なイメージができて、こんなにも増収益になること。</li>
-          <li>物販の売上も増収益になること。</li>
-        </ul>
-        
-        <p style="font-size: 15px; line-height: 1.8; color: #333; margin-bottom: 20px;">
-          現在の施術単価の月売上は、単価が2倍、施術人数が半分になっても同じです。<br>
-          ですので、さらに売上アップを測りたい先生は、今の単価メニューとは別メニューで単価２倍、３倍が可能な高単価メニューを取り入れると月商がさらに高くなります。
-        </p>
-        
-        <p style="font-size: 16px; line-height: 1.8; color: #2E5B8A; font-weight: bold; margin-top: 30px; padding: 20px; background: #f0f7ff; border-left: 4px solid #2E5B8A; border-radius: 5px;">
-          もし、この高単価メニューを取り入れ、鍼灸院の未来予想図を実現したいと思われたなら、その全てがマルッと実現可能なリバランス整顔美容鍼で一緒に成長していきましょう！
-        </p>
+      window.onload = function () {
+        calculateResults();
+      };
 
-         <p style="font-size: 15px; line-height: 1.8; color: #333; margin-top: 25px; text-align: center;">
-          もし、今すぐにでも気になる方は<a href="https://utage-system.com/p/6JSbuP6HZiKl" target="_blank" style="color: #e53935; text-decoration: underline; font-weight: bold;">こちらをクリック</a>してください。
-        </p>
-      </div>
-    </div>
-  </div>
+      function setMultiplier(multiplier) {
+        currentMultiplier = multiplier;
 
-  <script>
-    let currentMultiplier = 0;
-    
-    window.onload = function() {
-      calculateResults();
-    };
-    
-    function setMultiplier(multiplier) {
-      currentMultiplier = multiplier;
-      
-      const buttons = document.querySelectorAll('.multiplier-btn');
-      buttons.forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
-      
-      const currentPrice = parseInt(document.getElementById('current-price').value) || 0;
-      const futurePrice = currentPrice * multiplier;
-      document.getElementById('future-price').value = futurePrice;
-      
-      calculateResults();
-    }
+        const buttons = document.querySelectorAll('.multiplier-btn');
+        buttons.forEach((btn) => btn.classList.remove('active'));
+        event.target.classList.add('active');
 
-    function calculateResults() {
-      const currentPrice = parseInt(document.getElementById('current-price').value) || 0;
-      const patientCount = parseInt(document.getElementById('patient-count').value) || 0;
-      const workDays = parseInt(document.getElementById('work-days').value) || 0;
-      const futurePrice = parseInt(document.getElementById('future-price').value) || 0;
-      const premiumPatients = parseInt(document.getElementById('premium-patients').value) || 0;
-      const medicalCases = parseInt(document.getElementById('medical-cases').value) || 0;
+        const currentPrice = parseInt(document.getElementById('current-price').value) || 0;
+        const futurePrice = currentPrice * multiplier;
+        document.getElementById('future-price').value = futurePrice;
 
-      const monthlySales = currentPrice * patientCount * workDays;
-      const premiumRevenue = futurePrice * premiumPatients * workDays;
-      const productRevenue = medicalCases * 0.3 * 10000;
-      const totalSales = monthlySales + premiumRevenue + productRevenue;
-      const difference = totalSales - monthlySales;
+        calculateResults();
+      }
 
-      document.getElementById('monthly-sales').textContent = monthlySales.toLocaleString();
-      document.getElementById('premium-revenue').textContent = premiumRevenue.toLocaleString();
-      document.getElementById('product-revenue').textContent = productRevenue.toLocaleString();
-      document.getElementById('total-sales').textContent = totalSales.toLocaleString();
-      document.getElementById('current-bar-value').textContent = monthlySales.toLocaleString();
-      document.getElementById('future-bar-value').textContent = totalSales.toLocaleString();
-      document.getElementById('bar-difference').textContent = difference.toLocaleString();
+      function calculateResults() {
+        const currentPrice = parseInt(document.getElementById('current-price').value) || 0;
+        const patientCount = parseInt(document.getElementById('patient-count').value) || 0;
+        const workDays = parseInt(document.getElementById('work-days').value) || 0;
+        const futurePrice = parseInt(document.getElementById('future-price').value) || 0;
+        const premiumPatients = parseInt(document.getElementById('premium-patients').value) || 0;
+        const medicalCases = parseInt(document.getElementById('medical-cases').value) || 0;
 
-      const maxHeight = 250;
-      const minHeight = 80;
-      const currentHeight = Math.max(minHeight, (monthlySales / totalSales) * maxHeight);
-      const futureHeight = maxHeight;
+        const monthlySales = currentPrice * patientCount * workDays;
+        const premiumRevenue = futurePrice * premiumPatients * workDays;
+        const productRevenue = medicalCases * 0.3 * 10000;
+        const totalSales = monthlySales + premiumRevenue + productRevenue;
+        const difference = totalSales - monthlySales;
 
-      document.getElementById('current-bar').style.height = currentHeight + 'px';
-      document.getElementById('future-bar').style.height = futureHeight + 'px';
-    }
-     
-    document.addEventListener('DOMContentLoaded', function() {
-      const inputs = document.querySelectorAll('input[type="number"]:not([disabled])');
-      inputs.forEach(input => {
-        input.addEventListener('input', calculateResults);
+        document.getElementById('monthly-sales').textContent = monthlySales.toLocaleString();
+        document.getElementById('premium-revenue').textContent = premiumRevenue.toLocaleString();
+        document.getElementById('product-revenue').textContent = productRevenue.toLocaleString();
+        document.getElementById('total-sales').textContent = totalSales.toLocaleString();
+        document.getElementById('current-bar-value').textContent = monthlySales.toLocaleString();
+        document.getElementById('future-bar-value').textContent = totalSales.toLocaleString();
+        document.getElementById('bar-difference').textContent = difference.toLocaleString();
+
+        const maxHeight = 250;
+        const minHeight = 80;
+        const currentHeight = Math.max(minHeight, (monthlySales / totalSales) * maxHeight);
+        const futureHeight = maxHeight;
+
+        document.getElementById('current-bar').style.height = currentHeight + 'px';
+        document.getElementById('future-bar').style.height = futureHeight + 'px';
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const inputs = document.querySelectorAll('input[type="number"]:not([disabled])');
+        inputs.forEach((input) => {
+          input.addEventListener('input', calculateResults);
+        });
       });
-    });
-  </script>
+    </script>
 
-  <footer style="text-align: center; padding: 30px 20px; background: #f5f5f5; color: #666; font-size: 13px; margin-top: 50px; border-top: 1px solid #ddd;">
-    <p style="margin-bottom: 10px;">技術向上後の鍼灸院経営『未来予想図』シミュレーション</p>
-    <p>&copy; 2026 リバランス整顔美容鍼. All Rights Reserved.</p>
-  </footer>
+    <footer style="
+        text-align: center;
+        padding: 20px;
+        background: transparent;
+        color: #000;
+        font-size: 13px;
+        margin-top: 30px;
+        line-height: 1.4;
+      ">
+      <p style="margin-bottom: 5px">技術向上後の鍼灸院経営『未来予想図』シミュレーション</p>
+      <p>© 2026 リバランス整顔美容鍼. All Rights Reserved.</p>
+    </footer>
     
 </body>
 </html>
