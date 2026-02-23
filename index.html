@@ -414,7 +414,7 @@
         
         <div class="result-item">
           <span class="label">今の売上(月)</span>
-          <span class="value">¥<span id="monthly-sales">2,500,000</span></span>
+          <span class="value">ﾥ<span id="monthly-sales">2,500,000</span></span>
         </div>
         
         <div class="result-item">
@@ -425,7 +425,7 @@
         <div class="result-item">
          <div class="label">物販売上げ(サブスク)</div>
          <div class="value">¥<span id="product-revenue">300,000</span></div>
-         <div class="formula">カルテ枚数の30%×10,000円/月（目安）</div>
+         <div class="formula">カルテ枚数の30%×10,000円/月(目安)</div>
         </div>
 
         <div class="bar-chart-section">
@@ -435,7 +435,7 @@
     <div class="bar-item">
       <div class="bar current" id="current-bar"></div>
       <div class="bar-label">現在</div>
-      <div class="bar-value">¥<span id="current-bar-value">2,500,000</span></div>
+      <div class="bar-value">ﾥ<span id="current-bar-value">2,500,000</span></div>
     </div>
     
     <div class="bar-item">
@@ -446,15 +446,13 @@
   </div>
   
   <div class="increase-text">
-    現在の売上に <span class="amount">+ ¥<span id="bar-difference">300,000</span></span>
+    現在の売上に <span class="amount">+ ﾥ<span id="bar-difference">300,000</span></span>
   </div>
 </div>
 
         <div class="result-item-highlight">
           <span class="label">高単価メニュー導入後の月間総売上予測</span>
           <div class="value">¥<span id="total-sales">1,300,000</span></div>
-            <div class="note" style="color: #4CAF50;">今の売上に</div>
-          <div class="difference">+ ¥<span id="difference">300,000</span></div>
         </div>
       </div>
     </div>
@@ -529,32 +527,35 @@
       // 物販売上げ(サブスク)
       const productRevenue = medicalCases * 0.3 * 10000;
 
-      // 高単価メニュー導入後の月間総売上予測
-      const totalSales = monthlySales + premiumRevenue + productRevenue;
+      // differenceの値を別の変数に保存
+      const premiumIncrease = premiumRevenue; // 高単価メニューによる増加額
+      const productIncrease = productRevenue; // 物販売上げによる増加額
       
-      // 差額
-      const difference = totalSales - monthlySales;
+      // 合計増加額
+      const totalIncrease = premiumIncrease + productIncrease;
+      
+      // 高単価メニュー導入後の月間総売上予測
+      const totalSales = monthlySales + totalIncrease;
 
       // 結果を表示
       document.getElementById('monthly-sales').textContent = monthlySales.toLocaleString();
       document.getElementById('premium-revenue').textContent = premiumRevenue.toLocaleString();
       document.getElementById('product-revenue').textContent = productRevenue.toLocaleString();
       document.getElementById('total-sales').textContent = totalSales.toLocaleString();
-      document.getElementById('difference').textContent = difference.toLocaleString();
 
       // 棒グラフの数値を更新
-document.getElementById('current-bar-value').textContent = monthlySales.toLocaleString();
-document.getElementById('future-bar-value').textContent = totalSales.toLocaleString();
-document.getElementById('bar-difference').textContent = difference.toLocaleString();
+      document.getElementById('current-bar-value').textContent = monthlySales.toLocaleString();
+      document.getElementById('future-bar-value').textContent = totalSales.toLocaleString();
+      document.getElementById('bar-difference').textContent = totalIncrease.toLocaleString();
 
-// 棒グラフの高さを動的に調整
-const maxHeight = 250;
-const minHeight = 80;
-const currentHeight = Math.max(minHeight, (monthlySales / totalSales) * maxHeight);
-const futureHeight = maxHeight;
+      // 棒グラフの高さを動的に調整
+      const maxHeight = 250;
+      const minHeight = 80;
+      const currentHeight = Math.max(minHeight, (monthlySales / totalSales) * maxHeight);
+      const futureHeight = maxHeight;
 
-document.getElementById('current-bar').style.height = currentHeight + 'px';
-document.getElementById('future-bar').style.height = futureHeight + 'px';
+      document.getElementById('current-bar').style.height = currentHeight + 'px';
+      document.getElementById('future-bar').style.height = futureHeight + 'px';
     }
      
     document.addEventListener('DOMContentLoaded', function() {
@@ -563,12 +564,4 @@ document.getElementById('future-bar').style.height = futureHeight + 'px';
         input.addEventListener('input', calculateResults);
       });
     });
-  </script>
-
-  <footer style="text-align: center; padding: 30px 20px; background: #f5f5f5; color: #666; font-size: 13px; margin-top: 50px; border-top: 1px solid #ddd;">
-    <p style="margin-bottom: 10px;">技術向上後の鍼灸院経営『未来予想図』シュミレーション</p>
-    <p>&copy; 2026 リバランス整顔美容鍼. All Rights Reserved.</p>
-  </footer>
-    
-</body>
-</html>
+  
