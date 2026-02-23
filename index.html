@@ -116,6 +116,9 @@
     
     input[type="number"]:disabled {
       background-color: #e9ecef;
+      color: #333;                        /* 追加：文字色を濃く */
+  -webkit-text-fill-color: #333;      /* 追加：iOS/Safariでも濃く表示 */
+  opacity: 1;                         /* 追加：透明度を1に設定 */
       cursor: not-allowed;
     }
     
