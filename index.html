@@ -447,12 +447,12 @@
 
           <div class="form-group">
             <label for="current-price">今の平均単価(円)</label>
-            <input type="number" id="current-price" value="10000">
+            <input type="number" id="current-price" value="6000">
           </div>
 
           <div class="form-group">
             <label for="total-patients">★今の平均単価の患者数(人)</label>
-            <input type="number" id="total-patients" value="10">
+            <input type="number" id="total-patients" value="4">
           </div>
 
           <div class="form-group">
@@ -498,6 +498,9 @@
           <div class="form-group">
             <label for="medical-cases">カルテ枚数(枚)</label>
             <input type="number" id="medical-cases" value="0">
+              <p class="note" style="margin-top: 8px; color: #666; font-size: 13px; line-height: 1.5;">
++              ※カルテ枚数の30%の患者様が物販サブスク（月額10,000円目安）を契約すると仮定した場合の売上試算です。継続的な収入の柱として、高単価メニューと併せて導入することで、より安定した経営基盤を築くことができます。<br>カルテ枚数の30%×10,000円/月(目安)
++            </p>
           </div>
 
           <button class="calculate-btn" onclick="calculateResults()">結果を算出</button>
@@ -519,7 +522,6 @@
           <div class="result-item">
             <div class="label">物販売上げ(サブスク)</div>
             <div class="value">¥<span id="product-revenue">0</span></div>
-            <div class="formula">カルテ枚数の30%×10,000円/月(目安)</div>
           </div>
 
           <div class="bar-chart-section">
