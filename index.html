@@ -115,11 +115,12 @@
       }
 
       input[type='number']:disabled {
-        background-color: #e9ecef;
+        background-color: #ffffff;
         color: #333;
         -webkit-text-fill-color: #333;
         opacity: 1;
         cursor: not-allowed;
+        border: 2px solid #ddd;
       }
 
       .button-group {
@@ -267,7 +268,7 @@
 
       .bar-chart-section h3 {
         text-align: center;
-        margin-bottom: 40px;
+        margin-bottom: 50px;
         color: #2e5b8a;
         border: none;
         padding-bottom: 20px;
@@ -277,16 +278,16 @@
         display: flex;
         justify-content: center;
         align-items: flex-end;
-        gap: 60px;
+        gap: 40px;
         height: 300px;
-        margin: 70px 0 30px 0;
+        margin: 80px 0 30px 0;
       }
 
       .bar-item {
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 120px;
+        width: 110px;
       }
 
       .bar {
@@ -294,29 +295,43 @@
         border-radius: 15px 15px 0 0;
         transition: height 0.8s ease;
         display: flex;
-        align-items: flex-end;
+        align-items: center;
         justify-content: center;
-        padding-bottom: 10px;
+        padding: 10px 5px;
         color: white;
         font-weight: bold;
-        font-size: 14px;
+        font-size: 13px;
+        text-align: center;
+        line-height: 1.2;
       }
 
       .bar.current {
         background: #d0d0d0;
-        height: 120px;
       }
 
       .bar.future {
         background: linear-gradient(to top, #2e5b8a, #5a8fc4);
-        height: 250px;
+      }
+
+      .bar.premium {
+        background: linear-gradient(to top, #ff9800, #ffb74d);
+      }
+
+      .bar.total {
+        background: linear-gradient(to top, #4caf50, #81c784);
       }
 
       .bar-label {
         margin-top: 15px;
-        font-size: 18px;
+        font-size: 15px;
         font-weight: bold;
         color: #333;
+        text-align: center;
+        line-height: 1.3;
+        min-height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .bar-value {
@@ -346,21 +361,21 @@
         }
 
         .bar-chart-container {
-          gap: 40px;
+          gap: 20px;
           height: 250px;
-          margin-top: 60px;
+          margin-top: 70px;
         }
 
         .bar-item {
-          width: 100px;
+          width: 90px;
         }
 
         .bar.current {
-          height: 100px;
+          /* height set by JavaScript */
         }
 
         .bar.future {
-          height: 200px;
+          /* height set by JavaScript */
         }
       }
     </style>
@@ -372,7 +387,7 @@
         <p>
           このシミュレーターは、単なる計算機ではありません。<br>
           先生が「技術を磨くこと」が、いかにして<br>「自由な時間」と「精神的なゆとり」<br>
-          そして「揺るぎない収益」に直結するかを<br>可視化する未来予想図です。
+          そして「揺るぎない収益」に直結するかを可視化する未来予想図です。
         </p>
         <br>
         <p>
@@ -383,18 +398,22 @@
 
       <div class="form-grid">
         <div class="input-section">
-          <p class="note">※仮の数値が入力されていますのであなたのリアルな数字を入力してください。</p>
-        
+          <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px 15px; margin-bottom: 20px; border-radius: 5px;">
+            <p style="font-size: 14px; color: #856404; margin: 0; line-height: 1.5;">
+              ※仮の数値が入力されていますのであなたのリアルな数字を入力してください。
+            </p>
+          </div>
+          
           <h3>今の単価と患者数</h3>
 
           <div class="form-group">
-            <label for="current-price">今の単価(円)</label>
+            <label for="current-price">今の平均単価(円)</label>
             <input type="number" id="current-price" value="10000">
           </div>
 
           <div class="form-group">
-            <label for="patient-count">今の単価の1日の患者数(人)</label>
-            <input type="number" id="patient-count" value="10">
+            <label for="total-patients">1日の総患者数(人)</label>
+            <input type="number" id="total-patients" value="10">
           </div>
 
           <div class="form-group">
@@ -418,15 +437,25 @@
           </div>
 
           <div class="form-group">
-            <label for="premium-patients">高単価患者の人数予測(人/日)</label>
-            <input type="number" id="premium-patients" value="5">
+            <label for="total-future-patients">1日の総患者数(人)</label>
+            <input type="number" id="total-future-patients" value="0">
+          </div>
+
+          <div class="form-group">
+            <label for="premium-patients">高単価の患者数(人/日)</label>
+            <input type="number" id="premium-patients" value="0">
+          </div>
+
+          <div class="form-group">
+            <label for="current-patients">今の単価の患者数(人/日) ※自動計算</label>
+            <input type="number" id="current-patients" value="0" disabled>
           </div>
 
           <div class="subsection-title">未来のもう一つの収入の柱(物販サブスク)</div>
 
           <div class="form-group">
             <label for="medical-cases">カルテ枚数(枚)</label>
-            <input type="number" id="medical-cases" value="100">
+            <input type="number" id="medical-cases" value="0">
           </div>
 
           <button class="calculate-btn" onclick="calculateResults()">結果を算出</button>
@@ -437,7 +466,7 @@
 
           <div class="result-item">
             <span class="label">今の売上(月)</span>
-            <span class="value">¥<span id="monthly-sales">2,500,000</span></span>
+            <span class="value">¥<span id="monthly-sales">0</span></span>
           </div>
 
           <div class="result-item">
@@ -447,7 +476,7 @@
 
           <div class="result-item">
             <div class="label">物販売上げ(サブスク)</div>
-            <div class="value">¥<span id="product-revenue">300,000</span></div>
+            <div class="value">¥<span id="product-revenue">0</span></div>
             <div class="formula">カルテ枚数の30%×10,000円/月(目安)</div>
           </div>
 
@@ -456,26 +485,32 @@
 
             <div class="bar-chart-container">
               <div class="bar-item">
-                <div class="bar current" id="current-bar"></div>
+                <div class="bar current" id="current-bar"><span id="current-bar-text"></span></div>
                 <div class="bar-label">現在</div>
-                <div class="bar-value">¥<span id="current-bar-value">2,500,000</span></div>
+                <div class="bar-value">¥<span id="current-bar-value">0</span></div>
               </div>
 
               <div class="bar-item">
-                <div class="bar future" id="future-bar"></div>
-                <div class="bar-label">未来</div>
-                <div class="bar-value">¥<span id="future-bar-value">2,800,000</span></div>
+                <div class="bar premium" id="premium-bar"><span id="premium-bar-text"></span></div>
+                <div class="bar-label">高単価メニュー導入</div>
+                <div class="bar-value">¥<span id="premium-bar-value">0</span></div>
+              </div>
+
+              <div class="bar-item">
+                <div class="bar total" id="total-bar"><span id="total-bar-text"></span></div>
+                <div class="bar-label">高単価メニュー＋物販サブスク導入</div>
+                <div class="bar-value">¥<span id="total-bar-value">0</span></div>
               </div>
             </div>
 
             <div class="increase-text">
-              現在の売上に <span class="amount">+ ¥<span id="bar-difference">300,000</span></span>
+              高単価メニュー＋物販サブスク導入で <span class="amount">¥<span id="bar-difference">0</span></span> の上乗せ収入
             </div>
           </div>
 
           <div class="result-item-highlight">
-            <span class="label">高単価メニュー導入後の月間総売上予測</span>
-            <div class="value">¥<span id="total-sales">2,800,000</span></div>
+            <span class="label">高単価メニュー＋物販サブスク導入後の<br>月間総売上予測</span>
+            <div class="value">¥<span id="total-sales">0</span></div>
           </div>
         </div>
       </div>
@@ -552,33 +587,51 @@
 
       function calculateResults() {
         const currentPrice = parseInt(document.getElementById('current-price').value) || 0;
-        const patientCount = parseInt(document.getElementById('patient-count').value) || 0;
+        const totalPatients = parseInt(document.getElementById('total-patients').value) || 0;
         const workDays = parseInt(document.getElementById('work-days').value) || 0;
         const futurePrice = parseInt(document.getElementById('future-price').value) || 0;
         const premiumPatients = parseInt(document.getElementById('premium-patients').value) || 0;
         const medicalCases = parseInt(document.getElementById('medical-cases').value) || 0;
+        const totalFuturePatients = parseInt(document.getElementById('total-future-patients').value) || 0;
 
-        const monthlySales = currentPrice * patientCount * workDays;
+        // 今の単価の患者数を自動計算
+        const currentPatients = Math.max(0, totalFuturePatients - premiumPatients);
+        document.getElementById('current-patients').value = currentPatients;
+
+        const monthlySales = currentPrice * totalPatients * workDays;
         const premiumRevenue = futurePrice * premiumPatients * workDays;
         const productRevenue = medicalCases * 0.3 * 10000;
+        const premiumWithProduct = premiumRevenue + productRevenue;
         const totalSales = monthlySales + premiumRevenue + productRevenue;
-        const difference = totalSales - monthlySales;
 
         document.getElementById('monthly-sales').textContent = monthlySales.toLocaleString();
         document.getElementById('premium-revenue').textContent = premiumRevenue.toLocaleString();
         document.getElementById('product-revenue').textContent = productRevenue.toLocaleString();
         document.getElementById('total-sales').textContent = totalSales.toLocaleString();
+        
+        // 3本の棒グラフの値を設定
         document.getElementById('current-bar-value').textContent = monthlySales.toLocaleString();
-        document.getElementById('future-bar-value').textContent = totalSales.toLocaleString();
-        document.getElementById('bar-difference').textContent = difference.toLocaleString();
+        document.getElementById('premium-bar-value').textContent = premiumRevenue.toLocaleString();
+        document.getElementById('total-bar-value').textContent = premiumWithProduct.toLocaleString();
+        document.getElementById('bar-difference').textContent = premiumWithProduct.toLocaleString();
 
+        // 棒グラフ内の数値表示
+        document.getElementById('current-bar-text').textContent = '¥' + monthlySales.toLocaleString();
+        document.getElementById('premium-bar-text').textContent = '¥' + premiumRevenue.toLocaleString();
+        document.getElementById('total-bar-text').textContent = '¥' + premiumWithProduct.toLocaleString();
+
+        // 棒グラフの高さを計算
         const maxHeight = 250;
-        const minHeight = 80;
-        const currentHeight = Math.max(minHeight, (monthlySales / totalSales) * maxHeight);
-        const futureHeight = maxHeight;
-
+        const minHeight = 100;
+        const maxValue = Math.max(monthlySales, premiumRevenue, premiumWithProduct, 1);
+        
+        const currentHeight = monthlySales > 0 ? Math.max(minHeight, (monthlySales / maxValue) * maxHeight) : minHeight;
+        const premiumHeight = premiumRevenue > 0 ? Math.max(minHeight, (premiumRevenue / maxValue) * maxHeight) : minHeight;
+        const totalHeight = premiumWithProduct > 0 ? Math.max(minHeight, (premiumWithProduct / maxValue) * maxHeight) : minHeight;
+        
         document.getElementById('current-bar').style.height = currentHeight + 'px';
-        document.getElementById('future-bar').style.height = futureHeight + 'px';
+        document.getElementById('premium-bar').style.height = premiumHeight + 'px';
+        document.getElementById('total-bar').style.height = totalHeight + 'px';
       }
 
       document.addEventListener('DOMContentLoaded', function () {
