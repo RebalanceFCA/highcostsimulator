@@ -274,7 +274,7 @@
         align-items: flex-end;
         gap: 40px;
         height: 300px;
-        margin: 70px 0 30px 0;
+        margin: 100px 0 30px 0;
       }
 
       .bar-item {
@@ -470,7 +470,7 @@
         .bar-chart-container {
           gap: 8px;
           height: 250px;
-          margin-top: 80px;
+          margin-top: 100px;
           padding: 0 5px;
         }
 
@@ -741,6 +741,13 @@
         const futurePrice = currentPrice * multiplier;
         document.getElementById('future-price').value = futurePrice;
 
+        // 「今の単価」ボタン（multiplier === 1）を押した時は関連フィールドをリセット
+        if (multiplier === 1) {
+          document.getElementById('total-future-patients').value = 0;
+          document.getElementById('premium-patients').value = 0;
+          document.getElementById('current-patients').value = 0;
+        }
+
         calculateResults();
       }
 
@@ -757,11 +764,8 @@
         document.getElementById('current-patients').value = currentPatients;
 
         const monthlySales = currentPrice * totalPatients * workDays;
-        
-        if (currentMultiplier === 1) {
-          savedFutureSales = futurePrice * currentPatients * workDays;
-        }
-        const futureSales = savedFutureSales;
+        const futureSales = currentPrice * currentPatients * workDays;
+        savedFutureSales = futureSales;
         
         const premiumRevenue = (currentMultiplier === 1) ? 0 : (futurePrice * premiumPatients * workDays);
         const productRevenue = medicalCases * 0.3 * 10000;
@@ -814,3 +818,4 @@
     </footer>
   </body>
 </html>
+
