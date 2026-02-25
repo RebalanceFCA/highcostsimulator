@@ -358,15 +358,10 @@
         font-size: 18px;
       }
 
-      /* スマホ表示の調整 */
       @media (max-width: 768px) {
-        body {
-          padding: 15px;
-        }
-
         .input-section,
         .results-section {
-          padding: 30px 20px;
+          padding: 40px 20px;
         }
 
         .bar-chart-section h3 {
@@ -378,7 +373,7 @@
           gap: 12px;
           height: 250px;
           margin-top: 90px;
-          padding: 0 10px;
+          padding: 0 15px;
         }
 
         .bar-item {
@@ -465,6 +460,7 @@
           <div class="form-group">
             <label>目標単価設定</label>
             <div class="button-group">
+              <button type="button" class="multiplier-btn" onclick="setMultiplier(1)">今の単価</button>
               <button type="button" class="multiplier-btn" onclick="setMultiplier(2)">今の単価の<br>約2倍</button>
               <button type="button" class="multiplier-btn" onclick="setMultiplier(3)">今の単価の<br>約3倍</button>
             </div>
@@ -481,16 +477,13 @@
           </div>
 
           <div class="form-group">
-            <label for="premium-patients">高単価の患者数予測(人/日)</label>
+            <label for="premium-patients">高単価メニューの患者数予測(人/日)</label>
             <input type="number" id="premium-patients" value="0">
           </div>
 
           <div class="form-group">
-            <label for="current-patients">今の平均単価の患者数(人/日) ※自動計算</label>
+            <label for="current-patients">平均単価の患者数(人/日) ※自動計算</label>
             <input type="number" id="current-patients" value="0" disabled>
-               <p class="note" style="margin-top: 8px; color: #666; font-size: 13px; line-height: 1.5;">
-    （ここで出た人数を「★今の平均単価の患者数(人)」に入力してみてください。高単価メニューを導入した場合の具体的な未来の売上状況がグラフで確認できます。）
-  </p>
           </div>
 
           <div class="subsection-title">未来のもう一つの収入の柱(物販サブスク)</div>
@@ -512,7 +505,12 @@
 
           <div class="result-item">
             <span class="label">今の売上(月)</span>
-            <span class="value">¥<span id="monthly-sales">0</span></span>
+            <span class="value">¥<span id="monthly-sales">600,000</span></span>
+          </div>
+
+          <div class="result-item">
+            <span class="label">未来の平均単価の売上(月)</span>
+            <span class="value">¥<span id="future-sales">0</span></span>
           </div>
 
           <div class="result-item">
@@ -536,6 +534,12 @@
               </div>
 
               <div class="bar-item">
+                <div class="bar future" id="future-bar"><span id="future-bar-text"></span></div>
+                <div class="bar-label">未来の平均単価の売上</div>
+                <div class="bar-value">¥<span id="future-bar-value">0</span></div>
+              </div>
+
+              <div class="bar-item">
                 <div class="bar premium" id="premium-bar"><span id="premium-bar-text"></span></div>
                 <div class="bar-label">高単価メニュー導入</div>
                 <div class="bar-value">¥<span id="premium-bar-value">0</span></div>
@@ -554,7 +558,7 @@
           </div>
 
           <div class="result-item-highlight">
-            <span class="label">高単価メニュー＋物販サブスク導入後の<br>月間総売上予測</span>
+            <span class="label">高単価メニュー＋物販サブスク導入後<br>未来の月間総売上予測</span>
             <div class="value">¥<span id="total-sales">0</span></div>
           </div>
         </div>
@@ -594,6 +598,7 @@
 
     <script>
       let currentMultiplier = 0;
+      let savedFutureSales = 0;
 
       window.onload = function () {
         calculateResults();
@@ -622,42 +627,49 @@
         const medicalCases = parseInt(document.getElementById('medical-cases').value) || 0;
         const totalFuturePatients = parseInt(document.getElementById('total-future-patients').value) || 0;
 
-        // 今の単価の患者数を自動計算
         const currentPatients = Math.max(0, totalFuturePatients - premiumPatients);
         document.getElementById('current-patients').value = currentPatients;
 
         const monthlySales = currentPrice * totalPatients * workDays;
-        const premiumRevenue = futurePrice * premiumPatients * workDays;
+        
+        if (currentMultiplier === 1) {
+          savedFutureSales = futurePrice * currentPatients * workDays;
+        }
+        const futureSales = savedFutureSales;
+        
+        const premiumRevenue = (currentMultiplier === 1) ? 0 : (futurePrice * premiumPatients * workDays);
         const productRevenue = medicalCases * 0.3 * 10000;
-        const premiumWithProduct = premiumRevenue + productRevenue;
-        const totalSales = monthlySales + premiumRevenue + productRevenue;
+        const premiumWithProduct = (currentMultiplier === 1) ? productRevenue : (premiumRevenue + productRevenue);
+        const totalSales = futureSales + premiumRevenue + productRevenue;
 
         document.getElementById('monthly-sales').textContent = monthlySales.toLocaleString();
+        document.getElementById('future-sales').textContent = futureSales.toLocaleString();
         document.getElementById('premium-revenue').textContent = premiumRevenue.toLocaleString();
         document.getElementById('product-revenue').textContent = productRevenue.toLocaleString();
         document.getElementById('total-sales').textContent = totalSales.toLocaleString();
 
-        // 3本の棒グラフの値を設定
         document.getElementById('current-bar-value').textContent = monthlySales.toLocaleString();
+        document.getElementById('future-bar-value').textContent = futureSales.toLocaleString();
         document.getElementById('premium-bar-value').textContent = premiumRevenue.toLocaleString();
         document.getElementById('total-bar-value').textContent = premiumWithProduct.toLocaleString();
         document.getElementById('bar-difference').textContent = premiumWithProduct.toLocaleString();
 
-        // 棒グラフ内の数値表示
         document.getElementById('current-bar-text').textContent = '¥' + monthlySales.toLocaleString();
+        document.getElementById('future-bar-text').textContent = '¥' + futureSales.toLocaleString();
         document.getElementById('premium-bar-text').textContent = '¥' + premiumRevenue.toLocaleString();
         document.getElementById('total-bar-text').textContent = '¥' + premiumWithProduct.toLocaleString();
 
-        // 棒グラフの高さを計算
         const maxHeight = 250;
         const minHeight = 100;
-        const maxValue = Math.max(monthlySales, premiumRevenue, premiumWithProduct, 1);
+        const maxValue = Math.max(monthlySales, futureSales, premiumRevenue, premiumWithProduct, 1);
 
         const currentHeight = monthlySales > 0 ? Math.max(minHeight, (monthlySales / maxValue) * maxHeight) : minHeight;
+        const futureHeight = futureSales > 0 ? Math.max(minHeight, (futureSales / maxValue) * maxHeight) : minHeight;
         const premiumHeight = premiumRevenue > 0 ? Math.max(minHeight, (premiumRevenue / maxValue) * maxHeight) : minHeight;
         const totalHeight = premiumWithProduct > 0 ? Math.max(minHeight, (premiumWithProduct / maxValue) * maxHeight) : minHeight;
 
         document.getElementById('current-bar').style.height = currentHeight + 'px';
+        document.getElementById('future-bar').style.height = futureHeight + 'px';
         document.getElementById('premium-bar').style.height = premiumHeight + 'px';
         document.getElementById('total-bar').style.height = totalHeight + 'px';
       }
@@ -674,6 +686,5 @@
       <p style="margin-bottom: 5px">技術向上後の鍼灸院経営『未来予想図』シミュレーション</p>
       <p>© 2026 リバランス整顔美容鍼. All Rights Reserved.</p>
     </footer>
-    
-</body>
+  </body>
 </html>
