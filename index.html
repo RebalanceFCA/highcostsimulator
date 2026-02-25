@@ -52,12 +52,6 @@
         gap: 0;
       }
 
-      @media (max-width: 768px) {
-        .form-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-
       .input-section {
         background: #f8f9fa;
         padding: 40px 30px;
@@ -358,54 +352,156 @@
         font-size: 18px;
       }
 
+      /* スマホ対応 */
       @media (max-width: 768px) {
         body {
-          padding: 15px;
+          padding: 10px;
         }
 
-        .input-section,
-        .results-section {
+        .container {
+          border-radius: 10px;
+        }
+
+        .header {
           padding: 30px 20px;
         }
 
-        .bar-chart-section h3 {
-          margin-bottom: 45px;
-          padding-bottom: 20px;
+        .header h1 {
+          font-size: 22px;
+          margin-bottom: 12px;
         }
 
-        .bar-chart-container {
-          gap: 12px;
-          height: 250px;
-          margin-top: 90px;
-          padding: 0 10px;
+        .header p {
+          font-size: 13px;
         }
 
-        .bar-item {
-          width: 75px;
+        .form-grid {
+          grid-template-columns: 1fr;
         }
 
-        .bar-label {
-          font-size: 11px;
-          height: 68px;
-          line-height: 1.2;
+        .input-section {
+          padding: 25px 15px;
+          border-right: none;
+          border-bottom: 2px solid #e0e0e0;
         }
 
-        .bar-value {
+        .results-section {
+          padding: 25px 15px;
+        }
+
+        h3 {
+          font-size: 18px;
+          margin-bottom: 20px;
+        }
+
+        .subsection-title {
+          font-size: 15px;
+          margin-top: 25px;
+          margin-bottom: 15px;
+        }
+
+        .form-group {
+          margin-bottom: 15px;
+        }
+
+        label {
+          font-size: 13px;
+          margin-bottom: 6px;
+        }
+
+        input[type='number'] {
+          padding: 10px 12px;
+          font-size: 15px;
+        }
+
+        .multiplier-btn {
+          padding: 10px 12px;
           font-size: 12px;
         }
 
-        .bar {
+        .note {
+          font-size: 11px;
+        }
+
+        button.calculate-btn {
+          padding: 12px 25px;
+          font-size: 16px;
+          margin-top: 25px;
+        }
+
+        .result-item {
+          padding: 12px;
+          margin-bottom: 12px;
+        }
+
+        .result-item .label {
+          font-size: 14px;
+        }
+
+        .result-item .value {
+          font-size: 16px;
+        }
+
+        .result-item-highlight {
+          padding: 18px;
+          margin-top: 18px;
+        }
+
+        .result-item-highlight .label {
+          font-size: 17px;
+        }
+
+        .result-item-highlight .value {
+          font-size: 28px;
+        }
+
+        .bar-chart-section {
+          padding: 20px 10px;
+          margin-top: 15px;
+          margin-bottom: 20px;
+        }
+
+        .bar-chart-section h3 {
+          font-size: 16px;
+          margin-bottom: 35px;
+          padding-bottom: 15px;
+        }
+
+        .bar-chart-container {
+          gap: 8px;
+          height: 250px;
+          margin-top: 80px;
+          padding: 0 5px;
+        }
+
+        .bar-item {
+          width: 70px;
+        }
+
+        .bar-label {
           font-size: 10px;
-          padding: 8px 3px;
+          height: 65px;
+          line-height: 1.15;
+        }
+
+        .bar-value {
+          font-size: 11px;
+          margin-top: 6px;
+        }
+
+        .bar {
+          font-size: 9px;
+          padding: 6px 2px;
         }
 
         .increase-text {
-          font-size: 14px;
-          padding: 0 10px;
+          font-size: 13px;
+          padding: 0 8px;
+          line-height: 1.5;
         }
 
         .increase-text .amount {
-          font-size: 16px;
+          font-size: 15px;
         }
 
         .bar.current {
@@ -414,6 +510,32 @@
 
         .bar.future {
           height: 200px;
+        }
+
+        .bar.premium {
+          height: 150px;
+        }
+
+        .bar.total {
+          height: 200px;
+        }
+
+        .explanation-section {
+          padding: 30px 20px;
+        }
+
+        .explanation-section h3 {
+          font-size: 18px;
+          margin-bottom: 20px;
+        }
+
+        .explanation-section > div {
+          padding: 20px 15px !important;
+        }
+
+        .explanation-section p,
+        .explanation-section ul {
+          font-size: 14px !important;
         }
       }
     </style>
@@ -425,7 +547,7 @@
         <p>
           このシミュレーターは、単なる計算機ではありません。<br>
           先生が「技術を磨くこと」が、いかにして<br>「自由な時間」と「精神的なゆとり」<br>
-          そして「揺るぎない収益」に直結するかを<br>可視化する未来予想図です。
+          そして「揺るぎない収益」に直結するかを可視化する未来予想図です。
         </p>
         <br>
         <p>
@@ -464,7 +586,7 @@
           <div class="form-group">
             <label>目標単価設定</label>
             <div class="button-group">
-              <button type="button" class="multiplier-btn" onclick="setMultiplier(1)">今の単価</button>
+              <button type="button" class="multiplier-btn active" onclick="setMultiplier(1)">今の単価</button>
               <button type="button" class="multiplier-btn" onclick="setMultiplier(2)">今の単価の<br>約2倍</button>
               <button type="button" class="multiplier-btn" onclick="setMultiplier(3)">今の単価の<br>約3倍</button>
             </div>
@@ -495,10 +617,10 @@
           <div class="form-group">
             <label for="medical-cases">カルテ枚数(枚)</label>
             <input type="number" id="medical-cases" value="0">
-              <p class="note" style="margin-top: 8px; color: #666; font-size: 13px; line-height: 1.5;">
+            <p class="note" style="margin-top: 8px; color: #666; font-size: 13px; line-height: 1.5;">
               カルテ枚数の30%×10,000円/月(目安)<br>
               ※カルテ枚数の30%の患者様が物販サブスク（月額10,000円目安）を契約すると仮定した場合の売上試算です。継続的な収入の柱として、高単価メニューと併せて導入することで、より安定した経営基盤を築くことができます。
-             </p>
+            </p>
           </div>
 
           <button class="calculate-btn" onclick="calculateResults()">結果を算出</button>
@@ -532,25 +654,25 @@
 
             <div class="bar-chart-container">
               <div class="bar-item">
-                <div class="bar current" id="current-bar"><span id="current-bar-text"></span></div>
+                <div class="bar current" id="current-bar"><span id="current-bar-text">¥600,000</span></div>
                 <div class="bar-label">今の平均単価の売上</div>
-                <div class="bar-value">¥<span id="current-bar-value">0</span></div>
+                <div class="bar-value">¥<span id="current-bar-value">600,000</span></div>
               </div>
 
               <div class="bar-item">
-                <div class="bar future" id="future-bar"><span id="future-bar-text"></span></div>
+                <div class="bar future" id="future-bar"><span id="future-bar-text">¥0</span></div>
                 <div class="bar-label">未来の平均単価の売上</div>
                 <div class="bar-value">¥<span id="future-bar-value">0</span></div>
               </div>
 
               <div class="bar-item">
-                <div class="bar premium" id="premium-bar"><span id="premium-bar-text"></span></div>
+                <div class="bar premium" id="premium-bar"><span id="premium-bar-text">¥0</span></div>
                 <div class="bar-label">高単価メニュー導入</div>
                 <div class="bar-value">¥<span id="premium-bar-value">0</span></div>
               </div>
 
               <div class="bar-item">
-                <div class="bar total" id="total-bar"><span id="total-bar-text"></span></div>
+                <div class="bar total" id="total-bar"><span id="total-bar-text">¥0</span></div>
                 <div class="bar-label">高単価メニュー＋物販サブスク導入</div>
                 <div class="bar-value">¥<span id="total-bar-value">0</span></div>
               </div>
@@ -563,7 +685,7 @@
 
           <div class="result-item-highlight">
             <span class="label">高単価メニュー＋物販サブスク導入後<br>未来の月間総売上予測</span>
-            <div class="value">¥<span id="total-sales">0</span></div>
+            <div class="value">¥<span id="total-sales">600,000</span></div>
           </div>
         </div>
       </div>
